@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+/**
+ * Definition for singly-linked list.
+ */
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        vector<int> arr;
+
+        while (head != NULL) {
+            arr.push_back(head->val);
+            head = head->next;
+        }
+
+        for (int i = 1; i < arr.size(); i += 2) {
+            swap(arr[i - 1], arr[i]);
+        }
+
+        ListNode* dummy = new ListNode(-1);
+        ListNode* temp = dummy;
+
+        for (auto i : arr) {
+            temp->next = new ListNode(i);
+            temp = temp->next;
+        }
+
+        return dummy->next;
+    }
+};
+
+// Function to print linked list
+void printList(ListNode* head) {
+    while (head) {
+        cout << head->val << " -> ";
+        head = head->next;
+    }
+    cout << "NULL" << endl;
+}
+
+// Function to create linked list from vector
+ListNode* createList(vector<int> arr) {
+    ListNode* dummy = new ListNode(-1);
+    ListNode* temp = dummy;
+    for (int val : arr) {
+        temp->next = new ListNode(val);
+        temp = temp->next;
+    }
+    return dummy->next;
+}
+
+int main() {
+    Solution sol;
+
+    // Creating a linked list: 1 -> 2 -> 3 -> 4
+    vector<int> values = {1, 2, 3, 4};
+    ListNode* head = createList(values);
+
+    cout << "Original List: ";
+    printList(head);
+
+    // Swapping pairs
+    ListNode* newHead = sol.swapPairs(head);
+
+    cout << "Swapped List: ";
+    printList(newHead);
+
+    return 0;
+}
